@@ -15,7 +15,12 @@ class Engine {
 
     Engine& operator=(const Engine& other);
 
+    void    loop();
+    void    processInput();
+    void    render();
+
     private:
     SDL_Window*     _window;
     SDL_Renderer*   _renderer;
+    bool            _running;
 };
