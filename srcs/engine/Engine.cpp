@@ -18,6 +18,14 @@ Engine::Engine() {
         return;
     }
 
+    this->_colorBuffer = std::make_unique<ColorBuffer>(WIDTH, HEIGHT);
+    this->_colorBuffer->setTexture(SDL_CreateTexture(
+        this->_renderer,
+        SDL_PIXELFORMAT_ARGB8888,
+        SDL_TEXTUREACCESS_STREAMING,
+        WIDTH, HEIGHT
+    ));
+
     this->_running = true;
 }
 
@@ -26,7 +34,10 @@ Engine::Engine(const Engine& other) {
 }
 
 Engine::~Engine() {
+    SDL_DestroyTexture(this->_colorBuffer->getTexture());
+    SDL_DestroyRenderer(this->_renderer);
     SDL_DestroyWindow(this->_window);
+    SDL_Quit();
 }
 
 Engine &Engine::operator = (const Engine& other) {
@@ -58,6 +69,9 @@ void Engine::processInput() {
 void    Engine::render() {
     SDL_SetRenderDrawColor(this->_renderer, 255, 0, 0, 255);
     SDL_RenderClear(this->_renderer);
+
+    this->_colorBuffer->render(this->_renderer);
+    this->_colorBuffer->clear(0xFFFFFF00);
 
     SDL_RenderPresent(this->_renderer);
 }

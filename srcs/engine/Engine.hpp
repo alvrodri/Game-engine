@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include <iostream>
+#include "../color/ColorBuffer.hpp"
 
 #define WIDTH 640
 #define HEIGHT 480
@@ -19,8 +20,11 @@ class Engine {
     void    processInput();
     void    render();
 
+    void    clearImage(const uint32_t color);
+
     private:
-    SDL_Window*     _window;
-    SDL_Renderer*   _renderer;
-    bool            _running;
+    bool                            _running;
+    SDL_Window*                     _window;
+    SDL_Renderer*                   _renderer;
+    std::unique_ptr<ColorBuffer>    _colorBuffer;
 };

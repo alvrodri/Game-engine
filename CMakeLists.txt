@@ -9,6 +9,7 @@ include_directories(${SDL2_INCLUDE_DIRS})
 add_executable(GameEngine
     ./srcs/main.cpp
     ./srcs/engine/Engine.cpp
+    ./srcs/color/ColorBuffer.cpp
 )
 
 target_link_libraries(GameEngine ${SDL2_LIBRARIES})
