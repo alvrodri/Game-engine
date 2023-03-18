@@ -10,6 +10,7 @@ add_executable(GameEngine
     ./srcs/main.cpp
     ./srcs/engine/Engine.cpp
     ./srcs/color/ColorBuffer.cpp
+    ./srcs/vector/Vector.cpp
 )
 
 target_link_libraries(GameEngine ${SDL2_LIBRARIES})

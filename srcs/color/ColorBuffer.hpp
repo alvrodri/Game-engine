@@ -16,6 +16,10 @@ class ColorBuffer {
 
     void clear(uint32_t color);
     void render(SDL_Renderer *renderer);
+    void draw(int x, int y, uint32_t color);
+
+    void    drawGrid();
+    void    drawRect(int x, int y, int width, int height, uint32_t color);
 
     std::vector<uint32_t>& getBuffer();
 

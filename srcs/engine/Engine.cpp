@@ -67,11 +67,11 @@ void Engine::processInput() {
 }
 
 void    Engine::render() {
-    SDL_SetRenderDrawColor(this->_renderer, 255, 0, 0, 255);
+    SDL_SetRenderDrawColor(this->_renderer, 0, 0, 0, 255);
     SDL_RenderClear(this->_renderer);
 
+    this->_colorBuffer->drawGrid();
     this->_colorBuffer->render(this->_renderer);
-    this->_colorBuffer->clear(0xFFFFFF00);
 
     SDL_RenderPresent(this->_renderer);
 }

@@ -26,7 +26,32 @@ ColorBuffer& ColorBuffer::operator=(const ColorBuffer& other) {
 void ColorBuffer::clear(uint32_t color) {
     for (int y = 0; y < this->_height; y++) {
         for (int x = 0; x < this->_width; x++) {
-            this->_buffer[(this->_width * y) + x] = color;
+            this->draw(x, y, color);
+        }
+    }
+}
+
+void ColorBuffer::draw(int x, int y, uint32_t color) {
+    if (x > this->_width || y > this->_height)
+        return;
+
+    this->_buffer[(this->_width * y) + x] = color;
+}
+
+void ColorBuffer::drawGrid() {
+    for (int y = 0; y < this->_height; y++) {
+        for (int x = 0; x < this->_width; x++) {
+            if (y % 20 == 0 || x % 20 == 0) {
+                this->draw(x, y, 0xFF333333);
+            }
+        }
+    }
+}
+
+void ColorBuffer::drawRect(int x, int y, int width, int height, uint32_t color) {
+    for (int rectY = y; rectY < y + height; rectY++) {
+        for (int rectX = x; rectX < x + width; rectX++) {
+            this->draw(rectX, rectY, color);
         }
     }
 }
