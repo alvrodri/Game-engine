@@ -4,7 +4,6 @@ const int N_POINTS = 9 * 9 * 9;
 std::vector<Vector3> cubePoints;
 std::vector<Vector2> projectedPoints(N_POINTS);
 const float fov_factor = 640;
-Vector3 rotation(0, 0, 0);
 
 Engine::Engine() {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -42,6 +41,7 @@ Engine::Engine() {
         }
     }
 
+    this->_previousFrametime = 0;
     this->_running = true;
 }
 
@@ -88,18 +88,20 @@ void Engine::processInput() {
 }
 
 void    Engine::update() {
-    rotation.x += 0.01;
-    rotation.y += 0.01;
-    rotation.z += 0.01;
+    int timeToWait = FRAME_TARGET_TIME - (SDL_GetTicks() - this->_previousFrametime);
+    if (timeToWait > 0 && timeToWait <= FRAME_TARGET_TIME) {
+        SDL_Delay(timeToWait);
+    }
+    
+    this->_previousFrametime = SDL_GetTicks();
 
     for (int i = 0; i < N_POINTS; i++) {
         Vector3 point = cubePoints[i];
-
-        point.rotateX(rotation.x);
-        point.rotateY(rotation.y);
-        point.rotateZ(rotation.z);
-
         point.z -= this->_cameraPosition.z;
+
+        cubePoints[i].rotateX(0.01);
+        cubePoints[i].rotateY(0.01);
+        cubePoints[i].rotateZ(0.01);
 
         Vector2 projectedPoint = this->project(point);
         projectedPoints[i] = projectedPoint;

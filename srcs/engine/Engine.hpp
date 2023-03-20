@@ -8,6 +8,9 @@
 #define WIDTH 800
 #define HEIGHT 600
 
+#define FPS 60
+#define FRAME_TARGET_TIME (1000 / FPS)
+
 class Engine {
     public:
     Engine();
@@ -30,4 +33,5 @@ class Engine {
     SDL_Renderer*                   _renderer;
     std::unique_ptr<ColorBuffer>    _colorBuffer;
     Vector3                         _cameraPosition;
+    long                            _previousFrametime;
 };
