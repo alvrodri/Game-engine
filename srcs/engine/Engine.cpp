@@ -3,7 +3,8 @@
 const int N_POINTS = 9 * 9 * 9;
 std::vector<Vector3> cubePoints;
 std::vector<Vector2> projectedPoints(N_POINTS);
-const float fov_factor = 648;
+const float fov_factor = 640;
+Vector3 rotation(0, 0, 0);
 
 Engine::Engine() {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -31,7 +32,7 @@ Engine::Engine() {
         WIDTH, HEIGHT
     ));
 
-    this->_cameraPosition = Vector3(0, 0, -5);
+    this->_cameraPosition = Vector3(0, 0, -5.0f);
 
     for (float x = -1; x <= 1; x += 0.25) {
         for (float y = -1; y <= 1; y += 0.25) {
@@ -78,17 +79,29 @@ void Engine::processInput() {
         case SDL_KEYDOWN:
             if (event.key.keysym.sym == SDLK_ESCAPE)
                 this->_running = false;
+            else if (event.key.keysym.sym == SDLK_s)
+                this->_cameraPosition.z -= 0.25;
+            else if (event.key.keysym.sym == SDLK_w)
+                this->_cameraPosition.z += 0.25;
             break;
     }
 }
 
 void    Engine::update() {
+    rotation.x += 0.01;
+    rotation.y += 0.01;
+    rotation.z += 0.01;
+
     for (int i = 0; i < N_POINTS; i++) {
-        Vector3& point = cubePoints[i];
+        Vector3 point = cubePoints[i];
+
+        point.rotateX(rotation.x);
+        point.rotateY(rotation.y);
+        point.rotateZ(rotation.z);
+
         point.z -= this->_cameraPosition.z;
 
         Vector2 projectedPoint = this->project(point);
-
         projectedPoints[i] = projectedPoint;
     }
 }
@@ -101,12 +114,14 @@ void    Engine::render() {
     }
 
     this->_colorBuffer->render(this->_renderer);
+    this->_colorBuffer->clear(0xFF000000);
+
     SDL_RenderPresent(this->_renderer);
 }
 
 Vector2 Engine::project(Vector3& point) {
     return Vector2(
-         point.x / point.z * fov_factor,
-         point.y / point.z * fov_factor
+         (point.x * fov_factor) / point.z,
+         (point.y * fov_factor) / point.z
     );
 }

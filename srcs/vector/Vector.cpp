@@ -53,3 +53,24 @@ Vector3& Vector3::operator=(const Vector3& other) {
     this->z = other.z;
     return *this;
 }
+
+void Vector3::rotateX(float angle) {
+    float y = this->y;
+
+    this->y = this->y * cos(angle) - this->z * sin(angle);
+    this->z = this->z * cos(angle) + y * sin(angle);
+}
+
+void Vector3::rotateY(float angle) {
+    float x = this->x;
+
+    this->x = this->x * cos(angle) - this->z * sin(angle);
+    this->z = this->z * cos(angle) + x * sin(angle);
+}
+
+void Vector3::rotateZ(float angle) {
+    float x = this->x;
+
+    this->x = this->x * cos(angle) - this->y * sin(angle);
+    this->y = this->y * cos(angle) + x * sin(angle);
+}

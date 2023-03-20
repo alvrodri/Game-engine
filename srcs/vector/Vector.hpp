@@ -1,5 +1,7 @@
 #pragma once
 
+#include <math.h>
+
 class Vector2 {
     public:
     Vector2();
@@ -22,6 +24,10 @@ class Vector3 {
     ~Vector3();
 
     Vector3& operator=(const Vector3& other);
+
+    void rotateX(float angle);
+    void rotateY(float angle);
+    void rotateZ(float angle);
 
     float x, y, z;
 };
