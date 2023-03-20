@@ -10,7 +10,6 @@ class Vector2 {
 
     Vector2& operator=(const Vector2& other);
 
-    private:
     float x, y;
 };
 
@@ -24,6 +23,5 @@ class Vector3 {
 
     Vector3& operator=(const Vector3& other);
 
-    private:
     float x, y, z;
 };

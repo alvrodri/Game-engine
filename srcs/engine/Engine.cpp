@@ -1,5 +1,10 @@
 #include "Engine.hpp"
 
+const int N_POINTS = 9 * 9 * 9;
+std::vector<Vector3> cubePoints;
+std::vector<Vector2> projectedPoints(N_POINTS);
+const float fov_factor = 648;
+
 Engine::Engine() {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         std::cerr << "Couldn't initialize SDL (" << strerror(errno) << ")" << std::endl;
@@ -26,6 +31,16 @@ Engine::Engine() {
         WIDTH, HEIGHT
     ));
 
+    this->_cameraPosition = Vector3(0, 0, -5);
+
+    for (float x = -1; x <= 1; x += 0.25) {
+        for (float y = -1; y <= 1; y += 0.25) {
+            for (float z = -1; z <= 1; z += 0.25) {
+                cubePoints.push_back(Vector3(x, y, z));
+            }
+        }
+    }
+
     this->_running = true;
 }
 
@@ -47,6 +62,7 @@ Engine &Engine::operator = (const Engine& other) {
 void Engine::loop() {
     while (this->_running) {
         this->processInput();
+        this->update();
         this->render();
     }
 }
@@ -66,12 +82,31 @@ void Engine::processInput() {
     }
 }
 
+void    Engine::update() {
+    for (int i = 0; i < N_POINTS; i++) {
+        Vector3& point = cubePoints[i];
+        point.z -= this->_cameraPosition.z;
+
+        Vector2 projectedPoint = this->project(point);
+
+        projectedPoints[i] = projectedPoint;
+    }
+}
+
 void    Engine::render() {
-    SDL_SetRenderDrawColor(this->_renderer, 0, 0, 0, 255);
-    SDL_RenderClear(this->_renderer);
-
     this->_colorBuffer->drawGrid();
-    this->_colorBuffer->render(this->_renderer);
 
+    for (int i = 0; i < N_POINTS; i++) {
+        this->_colorBuffer->drawRect(projectedPoints[i].x + WIDTH / 2, projectedPoints[i].y + HEIGHT / 2, 4, 4, 0xFFFF0000);
+    }
+
+    this->_colorBuffer->render(this->_renderer);
     SDL_RenderPresent(this->_renderer);
+}
+
+Vector2 Engine::project(Vector3& point) {
+    return Vector2(
+         point.x / point.z * fov_factor,
+         point.y / point.z * fov_factor
+    );
 }

@@ -15,9 +15,14 @@ Vector2::Vector2(const Vector2& other) {
     this->y = other.y;
 }
 
+Vector2::~Vector2() {
+    
+}
+
 Vector2& Vector2::operator=(const Vector2& other) {
     this->x = other.x;
     this->y = other.y;
+    return *this;
 }
 
 Vector3::Vector3() {
@@ -38,8 +43,13 @@ Vector3::Vector3(const Vector3& other) {
     this->z = other.z;
 }
 
-Vector3& Vector3::operator = (const Vector3& other) {
+Vector3::~Vector3() {
+
+}
+
+Vector3& Vector3::operator=(const Vector3& other) {
     this->x = other.x;
     this->y = other.y;
     this->z = other.z;
+    return *this;
 }

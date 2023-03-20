@@ -32,7 +32,7 @@ void ColorBuffer::clear(uint32_t color) {
 }
 
 void ColorBuffer::draw(int x, int y, uint32_t color) {
-    if (x > this->_width || y > this->_height)
+    if (x >= this->_width || x < 0 || y >= this->_height || y < 0)
         return;
 
     this->_buffer[(this->_width * y) + x] = color;
@@ -41,7 +41,7 @@ void ColorBuffer::draw(int x, int y, uint32_t color) {
 void ColorBuffer::drawGrid() {
     for (int y = 0; y < this->_height; y++) {
         for (int x = 0; x < this->_width; x++) {
-            if (y % 20 == 0 || x % 20 == 0) {
+            if (y % 10 == 0 || x % 10 == 0) {
                 this->draw(x, y, 0xFF333333);
             }
         }
