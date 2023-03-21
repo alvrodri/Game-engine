@@ -6,16 +6,13 @@ typedef struct {
     Vector2 points[3];
 } triangle_t;
 
-mesh_t mesh = {
-    .vertices = {},
-    .faces = {},
-};
+mesh_t mesh;
 
 std::vector<triangle_t> trianglesToRender;
 
-static void load_obj_file_data(char* filename) {
+static void load_obj_file_data(std::string filename) {
     FILE* file;
-    file = fopen(filename, "r");
+    file = fopen(filename.c_str(), "r");
     char line[1024];
 
     while (fgets(line, 1024, file)) {
@@ -29,12 +26,14 @@ static void load_obj_file_data(char* filename) {
             int vertex_indices[3];
             int texture_indices[3];
             int normal_indices[3];
+
             sscanf(
                 line, "f %d/%d/%d %d/%d/%d %d/%d/%d",
                 &vertex_indices[0], &texture_indices[0], &normal_indices[0], 
                 &vertex_indices[1], &texture_indices[1], &normal_indices[1], 
                 &vertex_indices[2], &texture_indices[2], &normal_indices[2]
             ); 
+
             face_t face = {
                 .a = vertex_indices[0],
                 .b = vertex_indices[1],
@@ -71,7 +70,7 @@ Engine::Engine() {
         WIDTH, HEIGHT
     ));
 
-    this->_cameraPosition = Vector3(0, 0, -20.0f);
+    this->_cameraPosition = Vector3(0, 0, -30.0f);
     this->_previousFrametime = 0;
     this->_running = true;
 
@@ -127,6 +126,8 @@ void    Engine::update() {
 
     mesh.rotation.z = 3.15;
     mesh.rotation.y += 0.01;
+    mesh.rotation.x += 0.01;
+
     for (int i = 0; i < mesh.faces.size(); i++) {
         face_t mesh_face = mesh.faces[i];
 
@@ -163,9 +164,9 @@ void    Engine::render() {
     for (int i = 0; i < trianglesToRender.size(); i++) {
         triangle_t triangle = trianglesToRender[i];
 
-        this->_colorBuffer->drawLine(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, 0xFFF0FF0F);
-        this->_colorBuffer->drawLine(triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFF0FF0F);
-        this->_colorBuffer->drawLine(triangle.points[2].x, triangle.points[2].y, triangle.points[0].x, triangle.points[0].y, 0xFFF0FF0F);
+        this->_colorBuffer->drawLine(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, 0xFF00FF00);
+        this->_colorBuffer->drawLine(triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFF00FF00);
+        this->_colorBuffer->drawLine(triangle.points[2].x, triangle.points[2].y, triangle.points[0].x, triangle.points[0].y, 0xFF00FF00);
     }
 
     this->_colorBuffer->render(this->_renderer);

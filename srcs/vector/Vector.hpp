@@ -12,6 +12,13 @@ class Vector2 {
 
     Vector2& operator=(const Vector2& other);
 
+    const float length() const;
+
+    Vector2& operator+(const Vector2& other);
+    Vector2& operator-(const Vector2& other);
+    Vector2& operator*(const float factor);
+    Vector2& operator/(const float factor);
+
     float x, y;
 };
 
@@ -24,6 +31,13 @@ class Vector3 {
     ~Vector3();
 
     Vector3& operator=(const Vector3& other);
+
+    const float length() const;
+
+    Vector3& operator+(const Vector3& other);
+    Vector3& operator-(const Vector3& other);
+    Vector3& operator*(const float factor);
+    Vector3& operator/(const float factor);
 
     void rotateX(float angle);
     void rotateY(float angle);

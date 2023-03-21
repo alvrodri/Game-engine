@@ -8,7 +8,7 @@ typedef struct {
 } face_t;
 
 typedef struct {
-    std::vector<Vector3>    vertices;
-    std::vector<face_t>     faces;
+    std::vector<Vector3>    vertices = {};
+    std::vector<face_t>     faces = {};
     Vector3                 rotation = Vector3(0, 0, 0);
 } mesh_t;

@@ -25,6 +25,38 @@ Vector2& Vector2::operator=(const Vector2& other) {
     return *this;
 }
 
+const float Vector2::length() const {
+    return sqrt(pow(this->x, 2) + pow(this->y, 2));
+}
+
+Vector2& Vector2::operator+(const Vector2& other) {
+    this->x += other.x;
+    this->y += other.y;
+
+    return *this;
+}
+
+Vector2& Vector2::operator-(const Vector2& other) {
+    this->x -= other.x;
+    this->y -= other.y;
+
+    return *this;
+}
+
+Vector2& Vector2::operator*(const float factor) {
+    this->x *= factor;
+    this->y *= factor;
+
+    return *this;
+}
+
+Vector2& Vector2::operator/(const float factor) {
+    this->x /= factor;
+    this->y /= factor;
+
+    return *this;
+}
+
 Vector3::Vector3() {
     this->x = 0.0f;
     this->y = 0.0f;
@@ -73,4 +105,40 @@ void Vector3::rotateZ(float angle) {
 
     this->x = this->x * cos(angle) - this->y * sin(angle);
     this->y = this->y * cos(angle) + x * sin(angle);
+}
+
+const float Vector3::length() const {
+    return sqrt(pow(this->x, 2) + pow(this->y, 2) + pow(this->z, 2));
+}
+
+Vector3& Vector3::operator+(const Vector3& other) {
+    this->x += other.x;
+    this->y += other.y;
+    this->z += other.z;
+
+    return *this;
+}
+
+Vector3& Vector3::operator-(const Vector3& other) {
+    this->x -= other.x;
+    this->y -= other.y;
+    this->z -= other.z;
+
+    return *this;
+}
+
+Vector3& Vector3::operator*(const float factor) {
+    this->x *= factor;
+    this->y *= factor;
+    this->z *= factor;
+
+    return *this;
+}
+
+Vector3& Vector3::operator/(const float factor) {
+    this->x /= factor;
+    this->y /= factor;
+    this->z /= factor;
+
+    return *this;
 }
