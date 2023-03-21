@@ -1,6 +1,7 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
+#include <SDL_opengl.h>
 #include <iostream>
 #include "../color/ColorBuffer.hpp"
 #include "../vector/Vector.hpp"

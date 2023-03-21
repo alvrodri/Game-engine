@@ -29,32 +29,40 @@ const float Vector2::length() const {
     return sqrt(pow(this->x, 2) + pow(this->y, 2));
 }
 
-Vector2& Vector2::operator+(const Vector2& other) {
-    this->x += other.x;
-    this->y += other.y;
+Vector2 Vector2::operator+(const Vector2& other) {
+    Vector2 tmp(*this);
 
-    return *this;
+    tmp.x += other.x;
+    tmp.y += other.y;
+
+    return tmp;
 }
 
-Vector2& Vector2::operator-(const Vector2& other) {
-    this->x -= other.x;
-    this->y -= other.y;
+Vector2 Vector2::operator-(const Vector2& other) {
+    Vector2 tmp(*this);
 
-    return *this;
+    tmp.x -= other.x;
+    tmp.y -= other.y;
+
+    return tmp;
 }
 
-Vector2& Vector2::operator*(const float factor) {
-    this->x *= factor;
-    this->y *= factor;
+Vector2 Vector2::operator*(const float factor) {
+    Vector2 tmp(*this);
 
-    return *this;
+    tmp.x *= factor;
+    tmp.y *= factor;
+
+    return tmp;
 }
 
-Vector2& Vector2::operator/(const float factor) {
-    this->x /= factor;
-    this->y /= factor;
+Vector2 Vector2::operator/(const float factor) {
+    Vector2 tmp(*this);
 
-    return *this;
+    tmp.x /= factor;
+    tmp.y /= factor;
+
+    return tmp;
 }
 
 Vector3::Vector3() {
@@ -111,34 +119,54 @@ const float Vector3::length() const {
     return sqrt(pow(this->x, 2) + pow(this->y, 2) + pow(this->z, 2));
 }
 
-Vector3& Vector3::operator+(const Vector3& other) {
-    this->x += other.x;
-    this->y += other.y;
-    this->z += other.z;
+Vector3 Vector3::operator+(const Vector3& other) {
+    Vector3 tmp(*this);
 
-    return *this;
+    tmp.x += other.x;
+    tmp.y += other.y;
+    tmp.z += other.z;
+
+    return tmp;
 }
 
-Vector3& Vector3::operator-(const Vector3& other) {
-    this->x -= other.x;
-    this->y -= other.y;
-    this->z -= other.z;
+Vector3 Vector3::operator-(const Vector3& other) {
+    Vector3 tmp(*this);
 
-    return *this;
+    tmp.x -= other.x;
+    tmp.y -= other.y;
+    tmp.z -= other.z;
+
+    return tmp;
 }
 
-Vector3& Vector3::operator*(const float factor) {
-    this->x *= factor;
-    this->y *= factor;
-    this->z *= factor;
+Vector3 Vector3::operator*(const float factor) {
+    Vector3 tmp(*this);
 
-    return *this;
+    tmp.x *= factor;
+    tmp.y *= factor;
+    tmp.z *= factor;
+
+    return tmp;
 }
 
-Vector3& Vector3::operator/(const float factor) {
-    this->x /= factor;
-    this->y /= factor;
-    this->z /= factor;
+Vector3 Vector3::operator/(const float factor) {
+    Vector3 tmp(*this);
 
-    return *this;
+    tmp.x /= factor;
+    tmp.y /= factor;
+    tmp.z /= factor;
+
+    return tmp;
+}
+
+Vector3 Vector3::crossProduct(const Vector3& other) {
+    return Vector3(
+        this->y * other.z - this->z * other.y,
+        this->z * other.x - this->x * other.z,
+        this->x * other.y - this->y * other.x
+    );
+}
+
+float Vector3::dotProduct(const Vector3& other) {
+    return ((this->x * other.x) + (this->y * other.y) + (this->z * other.z));
 }

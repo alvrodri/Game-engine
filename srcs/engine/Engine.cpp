@@ -1,6 +1,6 @@
 #include "Engine.hpp"
 
-const float fov_factor = 640;
+const float scale_factor = 480;
 
 typedef struct {
     Vector2 points[3];
@@ -124,10 +124,6 @@ void    Engine::update() {
     
     this->_previousFrametime = SDL_GetTicks();
 
-    mesh.rotation.z = 3.15;
-    mesh.rotation.y += 0.01;
-    mesh.rotation.x += 0.01;
-
     for (int i = 0; i < mesh.faces.size(); i++) {
         face_t mesh_face = mesh.faces[i];
 
@@ -136,26 +132,45 @@ void    Engine::update() {
         face_vertices[1] = mesh.vertices[mesh_face.b - 1];
         face_vertices[2] = mesh.vertices[mesh_face.c - 1];
 
-        triangle_t projected_triangle;
+        std::vector<Vector3> transformedVertexes;
         for (int j = 0; j < 3; j++) {
-            Vector3 transformed = face_vertices[j];
+            Vector3 transformedVertex = face_vertices[j];
             
-            transformed.rotateX(mesh.rotation.x);
-            transformed.rotateY(mesh.rotation.y);
-            transformed.rotateZ(mesh.rotation.z);
+            transformedVertex.rotateX(mesh.rotation.x);
+            transformedVertex.rotateY(mesh.rotation.y);
+            transformedVertex.rotateZ(mesh.rotation.z);
 
-            transformed.z -= _cameraPosition.z;
+            transformedVertex.z += 30;
 
-            Vector2 projected = this->project(transformed);
+            transformedVertexes.push_back(transformedVertex);
+        }
+        
+        Vector3 vA = transformedVertexes[0];
+        Vector3 vB = transformedVertexes[1];
+        Vector3 vC = transformedVertexes[2];
+
+        Vector3 vAB = vB - vA;
+        Vector3 vAC = vC - vA;
+
+        Vector3 nV = vAB.crossProduct(vAC);
+        Vector3 cV = this->_cameraPosition - vA;
+
+        if (nV.dotProduct(cV) <= 0) continue;
+
+        triangle_t projectedTriangle;
+        for (int j = 0; j < 3; j++) {
+            Vector2 projected = this->project(transformedVertexes[j]);
 
             projected.x += WIDTH / 2;
             projected.y += HEIGHT / 2;
 
-            projected_triangle.points[j] = projected;
+            projectedTriangle.points[j] = projected;
         }
-
-        trianglesToRender.push_back(projected_triangle);
+        
+        trianglesToRender.push_back(projectedTriangle);
     }
+            mesh.rotation.x += 0.01;
+
 }
 
 void    Engine::render() {
@@ -179,7 +194,14 @@ void    Engine::render() {
 
 Vector2 Engine::project(Vector3& point) {
     return Vector2(
-         (point.x * fov_factor) / point.z,
-         (point.y * fov_factor) / point.z
+         (point.x * scale_factor) / point.z,
+         (point.y * scale_factor) / point.z
     );
 }
+
+/*
+template<R, C>
+class Matrix<T>
+
+typedef Matrix<1, 2>
+*/

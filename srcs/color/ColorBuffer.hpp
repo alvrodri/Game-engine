@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <vector>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 class ColorBuffer {
     public:

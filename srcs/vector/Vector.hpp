@@ -14,10 +14,10 @@ class Vector2 {
 
     const float length() const;
 
-    Vector2& operator+(const Vector2& other);
-    Vector2& operator-(const Vector2& other);
-    Vector2& operator*(const float factor);
-    Vector2& operator/(const float factor);
+    Vector2 operator+(const Vector2& other);
+    Vector2 operator-(const Vector2& other);
+    Vector2 operator*(const float factor);
+    Vector2 operator/(const float factor);
 
     float x, y;
 };
@@ -34,10 +34,13 @@ class Vector3 {
 
     const float length() const;
 
-    Vector3& operator+(const Vector3& other);
-    Vector3& operator-(const Vector3& other);
-    Vector3& operator*(const float factor);
-    Vector3& operator/(const float factor);
+    Vector3 operator+(const Vector3& other);
+    Vector3 operator-(const Vector3& other);
+    Vector3 operator*(const float factor);
+    Vector3 operator/(const float factor);
+
+    Vector3 crossProduct(const Vector3& other);
+    float dotProduct(const Vector3& other);
 
     void rotateX(float angle);
     void rotateY(float angle);
