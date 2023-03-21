@@ -4,6 +4,7 @@
 #include <iostream>
 #include "../color/ColorBuffer.hpp"
 #include "../vector/Vector.hpp"
+#include "../mesh/mesh.hpp"
 
 #define WIDTH 800
 #define HEIGHT 600

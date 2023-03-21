@@ -38,6 +38,13 @@ void ColorBuffer::draw(int x, int y, uint32_t color) {
     this->_buffer[(this->_width * y) + x] = color;
 }
 
+uint32_t ColorBuffer::getColor(int x, int y) {
+    if (x >= this->_width || x < 0 || y >= this->_height || y < 0)
+        return 0x00000000;
+
+    return this->_buffer[(this->_width * y) + x];
+}
+
 void ColorBuffer::drawGrid() {
     for (int y = 0; y < this->_height; y++) {
         for (int x = 0; x < this->_width; x++) {
@@ -54,6 +61,24 @@ void ColorBuffer::drawRect(int x, int y, int width, int height, uint32_t color) 
             this->draw(rectX, rectY, color);
         }
     }
+}
+
+void ColorBuffer::drawLine(int x0, int y0, int x1, int y1, uint32_t color) {
+    int dX = x1 - x0;
+    int dY = y1 - y0;
+    int stepSize = abs(dX) >= abs(dY) ? abs(dX) : abs(dY);
+
+    float xInc = dX / (float) stepSize;    
+    float yInc = dY / (float) stepSize;
+
+    float currX = x0;
+    float currY = y0;
+
+    for (int i = 0; i <= stepSize; i++) {
+        this->draw(round(currX), round(currY), color);
+        currX += xInc;
+        currY += yInc;
+    }    
 }
 
 void ColorBuffer::render(SDL_Renderer *renderer) {
