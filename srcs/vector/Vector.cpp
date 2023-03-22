@@ -170,3 +170,11 @@ Vector3 Vector3::crossProduct(const Vector3& other) {
 float Vector3::dotProduct(const Vector3& other) {
     return ((this->x * other.x) + (this->y * other.y) + (this->z * other.z));
 }
+
+void Vector3::normalize() {
+    float length = this->length();
+
+    this->x /= length;
+    this->y /= length;
+    this->z /= length;
+}

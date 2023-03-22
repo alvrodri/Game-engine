@@ -150,12 +150,17 @@ void    Engine::update() {
         Vector3 vC = transformedVertexes[2];
 
         Vector3 vAB = vB - vA;
+        vAB.normalize();
+
         Vector3 vAC = vC - vA;
+        vAC.normalize();
 
         Vector3 nV = vAB.crossProduct(vAC);
+        nV.normalize();
+
         Vector3 cV = this->_cameraPosition - vA;
 
-        if (nV.dotProduct(cV) <= 0) continue;
+        if (nV.dotProduct(cV) < 0) continue;
 
         triangle_t projectedTriangle;
         for (int j = 0; j < 3; j++) {

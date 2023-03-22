@@ -46,5 +46,7 @@ class Vector3 {
     void rotateY(float angle);
     void rotateZ(float angle);
 
+    void normalize();
+
     float x, y, z;
 };
