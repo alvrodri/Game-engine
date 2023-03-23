@@ -2,13 +2,12 @@
 
 const float scale_factor = 480;
 
-typedef struct {
-    Vector2 points[3];
-} triangle_t;
-
-mesh_t mesh;
+mesh_t mesh = {
+    .rotation = { M_PI, 0.0f, 0.0f }
+};
 
 std::vector<triangle_t> trianglesToRender;
+std::vector<Vector2> vectorsToRender;
 
 static void load_obj_file_data(std::string filename) {
     FILE* file;
@@ -101,6 +100,9 @@ void Engine::loop() {
     }
 }
 
+bool pressed = false;
+bool normals = false;
+float zoom = 30.0f;
 void Engine::processInput() {
     SDL_Event event;
     SDL_PollEvent(&event);
@@ -112,6 +114,23 @@ void Engine::processInput() {
         case SDL_KEYDOWN:
             if (event.key.keysym.sym == SDLK_ESCAPE)
                 this->_running = false;
+            if (event.key.keysym.sym == SDLK_n)
+                normals = !normals;
+            break;
+        case SDL_MOUSEMOTION:
+            if (pressed) {
+                mesh.rotation.y += (event.motion.xrel * 0.01);
+                mesh.rotation.x += (event.motion.yrel * 0.01);
+            }
+            break;
+        case SDL_MOUSEWHEEL:
+            zoom += event.wheel.y * 0.25;
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            pressed = true;
+            break;
+        case SDL_MOUSEBUTTONUP:
+            pressed = false;
             break;
     }
 }
@@ -140,7 +159,7 @@ void    Engine::update() {
             transformedVertex.rotateY(mesh.rotation.y);
             transformedVertex.rotateZ(mesh.rotation.z);
 
-            transformedVertex.z += 30;
+            transformedVertex.z += zoom;
 
             transformedVertexes.push_back(transformedVertex);
         }
@@ -158,7 +177,10 @@ void    Engine::update() {
         Vector3 nV = vAB.crossProduct(vAC);
         nV.normalize();
 
+        vectorsToRender.push_back(this->project(vAB));
+
         Vector3 cV = this->_cameraPosition - vA;
+	vectorsToRender.push_back(this->project(cV));	
 
         if (nV.dotProduct(cV) < 0) continue;
 
@@ -174,24 +196,36 @@ void    Engine::update() {
         
         trianglesToRender.push_back(projectedTriangle);
     }
-            mesh.rotation.x += 0.01;
-
 }
 
 void    Engine::render() {
     this->_colorBuffer->drawGrid();
 
-    for (int i = 0; i < trianglesToRender.size(); i++) {
-        triangle_t triangle = trianglesToRender[i];
+    if (normals) {
+        for (int i = 0; i < vectorsToRender.size(); i++) {
+            this->_colorBuffer->draw(vectorsToRender[i].x + WIDTH / 2, vectorsToRender[i].y + HEIGHT / 2, 0xFFFF0000);
+        }
+    } else {
+        for (int i = 0; i < trianglesToRender.size(); i++) {
+            triangle_t triangle = trianglesToRender[i];
 
-        this->_colorBuffer->drawLine(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, 0xFF00FF00);
-        this->_colorBuffer->drawLine(triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFF00FF00);
-        this->_colorBuffer->drawLine(triangle.points[2].x, triangle.points[2].y, triangle.points[0].x, triangle.points[0].y, 0xFF00FF00);
+            this->_colorBuffer->drawLine(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, 0xFF00FF00);
+            this->_colorBuffer->drawLine(triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFF00FF00);
+            this->_colorBuffer->drawLine(triangle.points[2].x, triangle.points[2].y, triangle.points[0].x, triangle.points[0].y, 0xFF00FF00);
+        }
     }
+    
+    /*this->_colorBuffer->drawFilledTriangle({ .points = {
+        Vector2(300, 100),
+        Vector2(50, 400),
+        Vector2(500, 700),
+    }}, 0xFF00FF00);*/
 
     this->_colorBuffer->render(this->_renderer);
 
     trianglesToRender.clear();
+    vectorsToRender.clear();
+
     this->_colorBuffer->clear(0xFF000000);
 
     SDL_RenderPresent(this->_renderer);
@@ -203,10 +237,3 @@ Vector2 Engine::project(Vector3& point) {
          (point.y * scale_factor) / point.z
     );
 }
-
-/*
-template<R, C>
-class Matrix<T>
-
-typedef Matrix<1, 2>
-*/
