@@ -116,7 +116,7 @@ void Vec3::rotateZ(float angle) {
 }
 
 const float Vec3::length() const {
-    return sqrt(pow(this->x, 2) + pow(this->y, 2) + pow(this->z, 2));
+    return sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
 }
 
 Vec3 Vec3::operator+(const Vec3& other) {

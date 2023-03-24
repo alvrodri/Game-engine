@@ -82,15 +82,32 @@ void ColorBuffer::drawLine(int x0, int y0, int x1, int y1, uint32_t color) {
 }
 
 void ColorBuffer::drawFlatBottomTriangle(int x0, int y0, int x1, int y1, int mX, int mY) {
-    this->draw(mX, y0, 0xFFFF0000);
-    this->draw(x1, y0, 0xFFFFFF00);
+  float slope1 = (float) (x1 - x0) / (y1 - y0);
+  float slope2 = (float) (mX - x0) / (mY - y0);
+
+  float xStart = x0, xEnd = x0;
+
+  for (int y = y0; y < mY; y++) {
+    this->drawLine(xStart, y, xEnd, y, 0xFFFF0000);
+    xStart += slope1;
+    xEnd += slope2;
+  }
 }
 
-void ColorBuffer::drawFlatTopTriangle(int x0, int y0, int x1, int y1, int mX, int mY) {
+void ColorBuffer::drawFlatTopTriangle(int x0, int y0, int mX, int mY, int x2, int y2) {
+  float slope1 = (float) (x2 - x0) / (y2 - y0);
+  float slope2 = (float) (x2 - mX) / (y2 - mY);
 
+  float xStart = x2, xEnd = x2;
+
+  for (int y = y2; y >= mY; y--) {
+    this->drawLine(xStart, y, xEnd, y, 0xFFFF0000);
+    xStart -= slope1;
+    xEnd -= slope2;
+  }
 }
 
-void    ColorBuffer::drawFilledTriangle(Triangle triangle, uint32_t color) {
+void    ColorBuffer::drawFilledTriangle(Triangle& triangle, uint32_t color) {
     if (triangle.points[0].y > triangle.points[1].y)
         std::swap(triangle.points[0], triangle.points[1]);
     if (triangle.points[1].y > triangle.points[2].y)
@@ -101,13 +118,14 @@ void    ColorBuffer::drawFilledTriangle(Triangle triangle, uint32_t color) {
     int mY = triangle.points[1].y;
     int mX = ((float)((triangle.points[2].x - triangle.points[0].x) * (triangle.points[1].y - triangle.points[0].y)) / (float)(triangle.points[2].y - triangle.points[0].y)) + triangle.points[0].x;
 
-    this->drawLine(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, 0xFF00FF00);
-    this->drawLine(triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFF00FF00);
-    this->drawLine(triangle.points[2].x, triangle.points[2].y, triangle.points[0].x, triangle.points[0].y, 0xFF00FF00);
-    this->drawLine(triangle.points[1].x, triangle.points[1].y, mX, mY, 0xFFFF0000);
-
     this->drawFlatBottomTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, mX, mY);
     this->drawFlatTopTriangle(triangle.points[1].x, triangle.points[1].y, mX, mY, triangle.points[2].x, triangle.points[2].y);
+}
+
+void    ColorBuffer::drawWireframe(Triangle &triangle, uint32_t color) {
+  this->drawLine(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, 0xFFF0F0F0);
+  this->drawLine(triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFF0F0F0);
+  this->drawLine(triangle.points[2].x, triangle.points[2].y, triangle.points[0].x, triangle.points[0].y, 0xFFF0F0F0);
 }
 
 void ColorBuffer::render(SDL_Renderer *renderer) {

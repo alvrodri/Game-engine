@@ -1,4 +1,5 @@
 #include "engine.hpp"
+#include <SDL_events.h>
 
 const float scale_factor = 480;
 
@@ -70,7 +71,7 @@ Engine::Engine() {
     ));
 
 
-    this->_cameraPosition = Vec3(0, 0, -30.0f);
+    this->_cameraPosition = Vec3(0, 0, 0);
     this->_previousFrametime = 0;
     this->_running = true;
 
@@ -124,7 +125,8 @@ void Engine::processInput() {
         case SDL_MOUSEWHEEL:
             zoom += event.wheel.y * 0.25;
             break;
-        case SDL_MOUSEBUTTONDOWN || SDL_MOUSEBUTTONUP:
+        case SDL_MOUSEBUTTONUP:
+        case SDL_MOUSEBUTTONDOWN:
             pressed = !pressed;
             break;
     }
@@ -192,19 +194,12 @@ void    Engine::update() {
 void    Engine::render() {
     this->_colorBuffer->drawGrid();
 
-    /*for (int i = 0; i < trianglesToRender.size(); i++) {
+    for (int i = 0; i < trianglesToRender.size(); i++) {
         Triangle triangle = trianglesToRender[i];
 
-        this->_colorBuffer->drawLine(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, 0xFF00FF00);
-        this->_colorBuffer->drawLine(triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFF00FF00);
-        this->_colorBuffer->drawLine(triangle.points[2].x, triangle.points[2].y, triangle.points[0].x, triangle.points[0].y, 0xFF00FF00);
-    }*/
-
-    this->_colorBuffer->drawFilledTriangle({ .points = {
-        Vec2(300, 100),
-        Vec2(50, 400),
-        Vec2(500, 700),
-    }}, 0xFF00FF00);
+        this->_colorBuffer->drawFilledTriangle(triangle, 0xFFFF0000);
+        this->_colorBuffer->drawWireframe(triangle, 0xFFFF0000);
+    }
 
     this->_colorBuffer->render(this->_renderer);
 
