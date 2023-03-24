@@ -2,45 +2,45 @@
 
 #include <math.h>
 
-class Vector2 {
+class Vec2 {
     public:
-    Vector2();
-    Vector2(float x, float y);
-    Vector2(const Vector2& other);
+    Vec2();
+    Vec2(float x, float y);
+    Vec2(const Vec2& other);
 
-    ~Vector2();
+    ~Vec2();
 
-    Vector2& operator=(const Vector2& other);
+    Vec2& operator=(const Vec2& other);
 
     const float length() const;
 
-    Vector2 operator+(const Vector2& other);
-    Vector2 operator-(const Vector2& other);
-    Vector2 operator*(const float factor);
-    Vector2 operator/(const float factor);
+    Vec2 operator+(const Vec2& other);
+    Vec2 operator-(const Vec2& other);
+    Vec2 operator*(const float factor);
+    Vec2 operator/(const float factor);
 
     float x, y;
 };
 
-class Vector3 {
+class Vec3 {
     public:
-    Vector3();
-    Vector3(float x, float y, float z);
-    Vector3(const Vector3& other);
+    Vec3();
+    Vec3(float x, float y, float z);
+    Vec3(const Vec3& other);
 
-    ~Vector3();
+    ~Vec3();
 
-    Vector3& operator=(const Vector3& other);
+    Vec3& operator=(const Vec3& other);
 
     const float length() const;
 
-    Vector3 operator+(const Vector3& other);
-    Vector3 operator-(const Vector3& other);
-    Vector3 operator*(const float factor);
-    Vector3 operator/(const float factor);
+    Vec3 operator+(const Vec3& other);
+    Vec3 operator-(const Vec3& other);
+    Vec3 operator*(const float factor);
+    Vec3 operator/(const float factor);
 
-    Vector3 crossProduct(const Vector3& other);
-    float dotProduct(const Vector3& other);
+    Vec3 crossProduct(const Vec3& other);
+    float dotProduct(const Vec3& other);
 
     void rotateX(float angle);
     void rotateY(float angle);

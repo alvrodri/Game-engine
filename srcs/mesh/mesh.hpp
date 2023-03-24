@@ -1,18 +1,18 @@
 #pragma once
 
 #include <vector>
-#include "../vector/Vector.hpp"
+#include "../vector/vector.hpp"
 
 typedef struct {
     int a, b, c;
-} face_t;
+} Face;
+
+typedef struct mesh_s {
+    std::vector<Vec3>   vertices;
+    std::vector<Face>   faces;
+    Vec3                rotation = Vec3(0, 0, 0);
+} Mesh;
 
 typedef struct {
-    std::vector<Vector3>    vertices = {};
-    std::vector<face_t>     faces = {};
-    Vector3                 rotation = Vector3(0, 0, 0);
-} mesh_t;
-
-typedef struct {
-    Vector2 points[3];
-} triangle_t;
+    Vec2 points[3];
+} Triangle;

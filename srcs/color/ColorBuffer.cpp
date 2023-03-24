@@ -1,4 +1,4 @@
-#include "ColorBuffer.hpp"
+#include "colorbuffer.hpp"
 
 ColorBuffer::ColorBuffer() {
     this->_buffer = std::vector<uint32_t>();
@@ -68,7 +68,7 @@ void ColorBuffer::drawLine(int x0, int y0, int x1, int y1, uint32_t color) {
     int dY = y1 - y0;
     int stepSize = abs(dX) >= abs(dY) ? abs(dX) : abs(dY);
 
-    float xInc = dX / (float) stepSize;    
+    float xInc = dX / (float) stepSize;
     float yInc = dY / (float) stepSize;
 
     float currX = x0;
@@ -82,23 +82,29 @@ void ColorBuffer::drawLine(int x0, int y0, int x1, int y1, uint32_t color) {
 }
 
 void ColorBuffer::drawFlatBottomTriangle(int x0, int y0, int x1, int y1, int mX, int mY) {
-
+    this->draw(mX, y0, 0xFFFF0000);
+    this->draw(x1, y0, 0xFFFFFF00);
 }
 
 void ColorBuffer::drawFlatTopTriangle(int x0, int y0, int x1, int y1, int mX, int mY) {
 
 }
 
-void    ColorBuffer::drawFilledTriangle(triangle_t triangle, uint32_t color) {
+void    ColorBuffer::drawFilledTriangle(Triangle triangle, uint32_t color) {
     if (triangle.points[0].y > triangle.points[1].y)
         std::swap(triangle.points[0], triangle.points[1]);
     if (triangle.points[1].y > triangle.points[2].y)
         std::swap(triangle.points[1], triangle.points[2]);
     if (triangle.points[0].y > triangle.points[1].y)
         std::swap(triangle.points[0], triangle.points[1]);
-    
+
     int mY = triangle.points[1].y;
     int mX = ((float)((triangle.points[2].x - triangle.points[0].x) * (triangle.points[1].y - triangle.points[0].y)) / (float)(triangle.points[2].y - triangle.points[0].y)) + triangle.points[0].x;
+
+    this->drawLine(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, 0xFF00FF00);
+    this->drawLine(triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFF00FF00);
+    this->drawLine(triangle.points[2].x, triangle.points[2].y, triangle.points[0].x, triangle.points[0].y, 0xFF00FF00);
+    this->drawLine(triangle.points[1].x, triangle.points[1].y, mX, mY, 0xFFFF0000);
 
     this->drawFlatBottomTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, mX, mY);
     this->drawFlatTopTriangle(triangle.points[1].x, triangle.points[1].y, mX, mY, triangle.points[2].x, triangle.points[2].y);

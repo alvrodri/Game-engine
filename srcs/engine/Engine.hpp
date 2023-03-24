@@ -3,8 +3,8 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <iostream>
-#include "../color/ColorBuffer.hpp"
-#include "../vector/Vector.hpp"
+#include "../color/colorbuffer.hpp"
+#include "../vector/vector.hpp"
 #include "../mesh/mesh.hpp"
 
 #define WIDTH 800
@@ -27,13 +27,13 @@ class Engine {
     void    processInput();
     void    render();
 
-    Vector2 project(Vector3& point);
+    Vec2 project(Vec3& point);
 
     private:
     bool                            _running;
     SDL_Window*                     _window;
     SDL_Renderer*                   _renderer;
     std::unique_ptr<ColorBuffer>    _colorBuffer;
-    Vector3                         _cameraPosition;
+    Vec3                         _cameraPosition;
     long                            _previousFrametime;
 };
