@@ -1,5 +1,6 @@
 #include "engine.hpp"
 #include <SDL_events.h>
+#include <algorithm>
 
 const float scale_factor = 480;
 
@@ -75,7 +76,7 @@ Engine::Engine() {
     this->_previousFrametime = 0;
     this->_running = true;
 
-    load_obj_file_data("./assets/cube.obj");
+    load_obj_file_data("./assets/formula.obj");
 }
 
 Engine::Engine(const Engine& other) {
@@ -186,9 +187,12 @@ void    Engine::update() {
 
             projectedTriangle.points[j] = projected;
         }
+        projectedTriangle.avgZ = (transformedVertexes[0].z + transformedVertexes[1].z + transformedVertexes[2].z) / 3;
 
         trianglesToRender.push_back(projectedTriangle);
     }
+
+    std::sort(trianglesToRender.begin(), trianglesToRender.end(), TriangleSort);
 }
 
 void    Engine::render() {

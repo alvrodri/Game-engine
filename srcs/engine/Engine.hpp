@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <iostream>
+#include <algorithm>
 #include "../color/colorbuffer.hpp"
 #include "../vector/vector.hpp"
 #include "../mesh/mesh.hpp"

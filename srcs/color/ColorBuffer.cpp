@@ -115,6 +115,24 @@ void    ColorBuffer::drawFilledTriangle(Triangle& triangle, uint32_t color) {
     if (triangle.points[0].y > triangle.points[1].y)
         std::swap(triangle.points[0], triangle.points[1]);
 
+    if (triangle.points[1].y == triangle.points[2].y) {
+      this->drawFlatBottomTriangle(
+          triangle.points[0].x, triangle.points[0].y,
+          triangle.points[1].x, triangle.points[1].y,
+          triangle.points[2].x, triangle.points[2].y
+      );
+      return;
+    }
+
+    if (triangle.points[0].y == triangle.points[1].y) {
+      this->drawFlatTopTriangle(
+          triangle.points[0].x, triangle.points[0].y,
+          triangle.points[1].x, triangle.points[1].y,
+          triangle.points[2].x, triangle.points[2].y
+      );
+      return;
+    }
+
     int mY = triangle.points[1].y;
     int mX = ((float)((triangle.points[2].x - triangle.points[0].x) * (triangle.points[1].y - triangle.points[0].y)) / (float)(triangle.points[2].y - triangle.points[0].y)) + triangle.points[0].x;
 
