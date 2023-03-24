@@ -3,7 +3,7 @@
 #include <vector>
 #include "../vector/vector.hpp"
 
-typedef struct {
+typedef struct face_s {
     int a, b, c;
 } Face;
 
@@ -13,6 +13,6 @@ typedef struct mesh_s {
     Vec3                rotation = Vec3(0, 0, 0);
 } Mesh;
 
-typedef struct {
+typedef struct triangle_s {
     Vec2 points[3];
 } Triangle;

@@ -69,6 +69,7 @@ Engine::Engine() {
         WIDTH, HEIGHT
     ));
 
+
     this->_cameraPosition = Vec3(0, 0, -30.0f);
     this->_previousFrametime = 0;
     this->_running = true;

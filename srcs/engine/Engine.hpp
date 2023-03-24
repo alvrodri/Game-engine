@@ -34,6 +34,6 @@ class Engine {
     SDL_Window*                     _window;
     SDL_Renderer*                   _renderer;
     std::unique_ptr<ColorBuffer>    _colorBuffer;
-    Vec3                         _cameraPosition;
+    Vec3                            _cameraPosition;
     long                            _previousFrametime;
 };
