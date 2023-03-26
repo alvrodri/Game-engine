@@ -8,9 +8,10 @@ include_directories(${SDL2_INCLUDE_DIRS})
 
 add_executable(GameEngine
     ./srcs/main.cpp
-    ./srcs/engine/Engine.cpp
-    ./srcs/color/ColorBuffer.cpp
-    ./srcs/vector/Vector.cpp
+    ./srcs/engine/engine.cpp
+    ./srcs/color/colorbuffer.cpp
+    ./srcs/vector/vector.cpp
+    ./srcs/matrix/matrix.cpp
 )
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
