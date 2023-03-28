@@ -28,3 +28,14 @@ mat4_t getTranslateMatrix(Vec3 &vec) {
 
   return m;
 }
+
+mat4_t getZRotation(uint32_t a) {
+  mat4_t m = getIdentity();
+
+  m.m[0][0] = cos(a);
+  m.m[0][1] = -sin(a);
+  m.m[1][0] = sin(a);
+  m.m[1][1] = cos(a);
+
+  return m;
+}

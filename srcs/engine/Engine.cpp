@@ -126,8 +126,8 @@ void Engine::processInput() {
     break;
   case SDL_MOUSEMOTION:
     if (pressed) {
-      mesh.rotation.y += (event.motion.xrel * 0.01);
-      mesh.rotation.x += (event.motion.yrel * 0.01);
+      //mesh.rotation.y += (event.motion.xrel * 0.01);
+      //mesh.rotation.x += (event.motion.yrel * 0.01);
     }
     break;
   case SDL_MOUSEWHEEL:
@@ -158,19 +158,19 @@ void Engine::update() {
 
     std::vector<Vec3> transformedVertexes;
     for (int j = 0; j < 3; j++) {
-      face_vertices[j].rotateX(mesh.rotation.x);
-      face_vertices[j].rotateY(mesh.rotation.y);
-      face_vertices[j].rotateZ(mesh.rotation.z);
-
       Vec4 transformedVertex = Vec4(face_vertices[j]);
 
       transformedVertex = transformedVertex * getScaleMatrix(mesh.scale).m;
       transformedVertex = transformedVertex * getTranslateMatrix(mesh.translation).m;
 
+      std::cout << mesh.rotation.z << std::endl;
+      transformedVertex = transformedVertex * getZRotation(mesh.rotation.z).m;
+
       transformedVertex.z += zoom;
 
       transformedVertexes.push_back(
-          Vec3(transformedVertex.x, transformedVertex.y, transformedVertex.z));
+          Vec3(transformedVertex.x, transformedVertex.y, transformedVertex.z
+      ));
     }
 
     Vec3 vA = transformedVertexes[0];
