@@ -1,8 +1,4 @@
 #include "engine.hpp"
-#include <SDL_events.h>
-#include <SDL_keycode.h>
-#include <algorithm>
-#include <utility>
 
 const float scale_factor = 480;
 
@@ -67,11 +63,13 @@ Engine::Engine() {
       SDL_CreateTexture(this->_renderer, SDL_PIXELFORMAT_ARGB8888,
                         SDL_TEXTUREACCESS_STREAMING, WIDTH, HEIGHT));
 
-  this->_cameraPosition = Vec3(0, 0, -20);
+  this->_cameraPosition = Vec3(0, 0, -30);
+
   this->_previousFrametime = 0;
   this->_running = true;
 
-  load_obj_file_data("./assets/cube.obj");
+  load_obj_file_data("./assets/formula.obj");
+  mesh.translation = Vec3(0, 0, 25);
 }
 
 Engine::Engine(const Engine &other) {
@@ -123,19 +121,10 @@ void Engine::processInput() {
       mesh.scale.x += 0.1, mesh.scale.y += 0.1;
     if (event.key.keysym.sym == SDLK_MINUS)
       mesh.scale.x -= 0.1, mesh.scale.y -= 0.1;
-    break;
-  case SDL_MOUSEMOTION:
-    if (pressed) {
-      //mesh.rotation.y += (event.motion.xrel * 0.01);
-      //mesh.rotation.x += (event.motion.yrel * 0.01);
-    }
-    break;
-  case SDL_MOUSEWHEEL:
-    zoom += event.wheel.y * 0.25;
-    break;
-  case SDL_MOUSEBUTTONUP:
-  case SDL_MOUSEBUTTONDOWN:
-    pressed = !pressed;
+    if (event.key.keysym.sym == SDLK_q)
+      mesh.rotation.y -= 1 * (M_PI / 180);
+    if (event.key.keysym.sym == SDLK_e)
+      mesh.rotation.y += 1* (M_PI / 180);
     break;
   }
 }
@@ -162,12 +151,10 @@ void Engine::update() {
 
       transformedVertex = transformedVertex * getScaleMatrix(mesh.scale).m;
       transformedVertex = transformedVertex * getTranslateMatrix(mesh.translation).m;
-
-      std::cout << mesh.rotation.z << std::endl;
-      transformedVertex = transformedVertex * getZRotation(mesh.rotation.z).m;
-
-      transformedVertex.z += zoom;
-
+      transformedVertex = transformedVertex * getXRotationMatrix(mesh.rotation.x).m;
+      transformedVertex = transformedVertex * getYRotationMatrix(mesh.rotation.y).m;
+      transformedVertex = transformedVertex * getZRotationMatrix(mesh.rotation.z).m;
+      
       transformedVertexes.push_back(
           Vec3(transformedVertex.x, transformedVertex.y, transformedVertex.z
       ));
@@ -201,6 +188,7 @@ void Engine::update() {
 
       projectedTriangle.points[j] = projected;
     }
+
     projectedTriangle.avgZ =
         (transformedVertexes[0].z + transformedVertexes[1].z +
          transformedVertexes[2].z) /

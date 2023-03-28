@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <vector>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "../vector/vector.hpp"
 #include "../mesh/mesh.hpp"
 

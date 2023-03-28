@@ -1,8 +1,9 @@
 #pragma once
 
-#include <SDL.h>
-#include <SDL_opengl.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
 #include <iostream>
+#include <utility>
 #include <algorithm>
 #include "../color/colorbuffer.hpp"
 #include "../vector/vector.hpp"
