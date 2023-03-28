@@ -1,6 +1,8 @@
 #pragma once
 
+#include <SDL_opengl.h>
 #include <math.h>
+#include <iostream>
 
 class Vec2 {
     public:
@@ -42,6 +44,8 @@ class Vec3 {
     Vec3 crossProduct(const Vec3& other);
     float dotProduct(const Vec3& other);
 
+    void scale(float[4][4]);
+
     void rotateX(float angle);
     void rotateY(float angle);
     void rotateZ(float angle);
@@ -49,4 +53,14 @@ class Vec3 {
     void normalize();
 
     float x, y, z;
+};
+
+class Vec4 {
+  public:
+  Vec4(float x, float y, float z, float w);
+  Vec4(const Vec3& vec);
+
+  Vec4 operator*(float [4][4]);
+
+  float x, y, z, w;
 };

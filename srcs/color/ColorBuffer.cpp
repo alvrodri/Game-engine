@@ -141,9 +141,9 @@ void    ColorBuffer::drawFilledTriangle(Triangle& triangle, uint32_t color) {
 }
 
 void    ColorBuffer::drawWireframe(Triangle &triangle, uint32_t color) {
-  this->drawLine(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, 0xFFF0F0F0);
-  this->drawLine(triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFF0F0F0);
-  this->drawLine(triangle.points[2].x, triangle.points[2].y, triangle.points[0].x, triangle.points[0].y, 0xFFF0F0F0);
+  this->drawLine(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, color);
+  this->drawLine(triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, color);
+  this->drawLine(triangle.points[2].x, triangle.points[2].y, triangle.points[0].x, triangle.points[0].y, color);
 }
 
 void ColorBuffer::render(SDL_Renderer *renderer) {

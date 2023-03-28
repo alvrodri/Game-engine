@@ -7,6 +7,7 @@
 #include "../color/colorbuffer.hpp"
 #include "../vector/vector.hpp"
 #include "../mesh/mesh.hpp"
+#include "../matrix/matrix.hpp"
 
 #define WIDTH 800
 #define HEIGHT 600

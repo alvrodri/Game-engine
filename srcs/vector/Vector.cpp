@@ -178,3 +178,27 @@ void Vec3::normalize() {
     this->y /= length;
     this->z /= length;
 }
+
+void Vec3::scale(float m[4][4]) {
+  this->x *= m[0][0];
+  this->y *= m[1][1];
+  this->z *= m[2][2];
+}
+
+Vec4::Vec4(float x, float y, float z, float w): x(x), y(y), z(z), w(w) {}
+
+Vec4::Vec4(const Vec3 &vec) {
+  this->x = vec.x;
+  this->y = vec.y;
+  this->z = vec.z;
+  this->w = 1.0f;
+}
+
+Vec4 Vec4::operator*(float m[4][4]) {
+  return Vec4(
+      m[0][0] * this->x + m[0][1] * this->y + m[0][2] * this->z + m[0][3] * this->w,
+      m[1][0] * this->x + m[1][1] * this->y + m[1][2] * this->z + m[1][3] * this->w,
+      m[2][0] * this->x + m[2][1] * this->y + m[2][2] * this->z + m[2][3] * this->w,
+      m[3][0] * this->x + m[3][1] * this->y + m[3][2] * this->z + m[3][3] * this->w
+  );
+}

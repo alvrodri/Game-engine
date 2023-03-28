@@ -12,7 +12,7 @@ typedef struct mesh_s {
     std::vector<Vec3>   vertices;
     std::vector<Face>   faces;
     Vec3                rotation;
-    Vec3                scale;
+    Vec3                scale = {1, 1, 1};
     Vec3                translation;
 } Mesh;
 
