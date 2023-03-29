@@ -68,7 +68,7 @@ Engine::Engine() {
   this->_previousFrametime = 0;
   this->_running = true;
 
-  load_obj_file_data("./assets/formula.obj");
+  load_obj_file_data("./assets/cube.obj");
   mesh.translation = Vec3(0, 0, 25);
 }
 
@@ -117,14 +117,24 @@ void Engine::processInput() {
       mesh.translation.x -= 0.5;
     if (event.key.keysym.sym == SDLK_RIGHT)
       mesh.translation.x += 0.5;
-    if (event.key.keysym.sym == SDLK_PLUS)
-      mesh.scale.x += 0.1, mesh.scale.y += 0.1;
-    if (event.key.keysym.sym == SDLK_MINUS)
-      mesh.scale.x -= 0.1, mesh.scale.y -= 0.1;
+    if (event.key.keysym.sym == SDLK_PLUS) {
+      mesh.scale.x += 0.1;
+      mesh.scale.y += 0.1;
+      mesh.scale.z += 0.1;
+    }
+    if (event.key.keysym.sym == SDLK_MINUS) {
+      mesh.scale.x -= 0.1;
+      mesh.scale.y -= 0.1;
+      mesh.scale.z -= 0.1;
+    }
     if (event.key.keysym.sym == SDLK_q)
-      mesh.rotation.y -= 1 * (M_PI / 180);
+      mesh.rotation.y -= 5 * (M_PI / 180);
     if (event.key.keysym.sym == SDLK_e)
-      mesh.rotation.y += 1* (M_PI / 180);
+      mesh.rotation.y += 5* (M_PI / 180);
+    if (event.key.keysym.sym == SDLK_w)
+      mesh.rotation.x -= 5 * (M_PI / 180);
+    if (event.key.keysym.sym == SDLK_s)
+      mesh.rotation.x += 5* (M_PI / 180);
     break;
   }
 }
@@ -150,11 +160,11 @@ void Engine::update() {
       Vec4 transformedVertex = Vec4(face_vertices[j]);
 
       transformedVertex = transformedVertex * getScaleMatrix(mesh.scale).m;
-      transformedVertex = transformedVertex * getTranslateMatrix(mesh.translation).m;
       transformedVertex = transformedVertex * getXRotationMatrix(mesh.rotation.x).m;
       transformedVertex = transformedVertex * getYRotationMatrix(mesh.rotation.y).m;
       transformedVertex = transformedVertex * getZRotationMatrix(mesh.rotation.z).m;
-      
+      transformedVertex = transformedVertex * getTranslateMatrix(mesh.translation).m;
+
       transformedVertexes.push_back(
           Vec3(transformedVertex.x, transformedVertex.y, transformedVertex.z
       ));
