@@ -13,3 +13,4 @@ mat4_t getTranslateMatrix(Vec3& vec);
 mat4_t getXRotationMatrix(float a);
 mat4_t getYRotationMatrix(float a);
 mat4_t getZRotationMatrix(float a);
+mat4_t multiplyMatrix(mat4_t first, mat4_t second);

@@ -61,3 +61,15 @@ mat4_t getZRotationMatrix(float a) {
 
   return m;
 }
+
+mat4_t multiplyMatrix(mat4_t first, mat4_t second) {
+  mat4_t ret;
+
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      ret.m[i][j] = first.m[i][0] * second.m[0][j] + first.m[i][1] * second.m[1][j] + first.m[i][2] * second.m[2][j] + first.m[i][3] * second.m[3][j];
+    }
+  }
+
+  return ret;
+}

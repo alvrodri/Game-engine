@@ -1,7 +1,7 @@
 #pragma once
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
+#include <SDL.h>
+#include <SDL_opengl.h>
 #include <iostream>
 #include <utility>
 #include <algorithm>
@@ -30,6 +30,8 @@ class Engine {
     void    processInput();
     void    render();
 
+    void    importMesh(const std::string& path);
+
     Vec2 project(Vec3& point);
 
     private:
@@ -39,4 +41,6 @@ class Engine {
     std::unique_ptr<ColorBuffer>    _colorBuffer;
     Vec3                            _cameraPosition;
     long                            _previousFrametime;
+    std::vector<Mesh>               _meshes;
+    std::vector<Triangle>           _toRender;
 };
